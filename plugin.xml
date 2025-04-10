@@ -3,10 +3,10 @@
 <plugin xmlns="http://plugin.powerschool.pearson.com"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation='http://plugin.powerschool.pearson.com plugin.xsd'
-        name="LPS SPEC.ED. SIMS"
+        name="LPS Sped Only SIMS Reporting"
         version="1.0"
         description="State SIMS reporting for Special Education students">
-    <publisher name="Benjamin Houle">
-    <contact email="benjamin.houle@lawrence.k12.ma.us"/>
+    <publisher name="John Sandoval">
+    <contact email="john.sandoval@lawrence.k12.ma.us"/>
     </publisher>
 </plugin>
