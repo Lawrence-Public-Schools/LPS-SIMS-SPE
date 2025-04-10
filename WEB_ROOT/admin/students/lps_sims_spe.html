@@ -1,315 +1,358 @@
-
 <!----------------------------------------------------------
 | FileName: 'lps_sims_spe.html'
 | Description: State SIMS data for Special Ed. students
 | Author: Benjamin Houle
 ---------------------------------------------------------->
 <!DOCTYPE html>
-<html>   
+<html>
 <!-- start right frame -->
+
 <head>
-<title>SIMS Data Elements</title>
-~[wc:commonscripts]
-<link href="/images/css/screen.css" rel="stylesheet" media="screen">
-<link href="/images/css/print.css" rel="stylesheet" media="print">
-<!-- ~ PREPARING FOR FILE STRUCTURE MIGRATION ~
+  <title>SIMS Data Elements</title>
+  ~[wc:commonscripts]
+  <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+  <link href="/images/css/print.css" rel="stylesheet" media="print">
+  <!-- ~ PREPARING FOR FILE STRUCTURE MIGRATION ~
 <link href="/admin/styles/lps_sims_spe.css" rel="stylesheet">
 <script src="/admin/javascript/lps_sims_ell.js"></script>
 -->
-<script type="text/javascript">
+  <script type="text/javascript">
 
-function checkDefaultInfo() {
-  if (document.getElementById('enrollstatus').value == "04"
-  && (document.getElementById('futureplans').value == "500"
-    || document.getElementById('gradstatus').value == "00")
-  ) {
-    var errormsg1;
-		document.getElementById('futureplans').value == "500" ? errormsg1 = " - DOE033 (Post Graduate Plans) must be set to something other than 500 \n" : errormsg1 = "";
+    function checkDefaultInfo() {
+      if (document.getElementById('enrollstatus').value == "04"
+        && (document.getElementById('futureplans').value == "500"
+          || document.getElementById('gradstatus').value == "00")
+      ) {
+        var errormsg1;
+        document.getElementById('futureplans').value == "500" ? errormsg1 = " - DOE033 (Post Graduate Plans) must be set to something other than 500 \n" : errormsg1 = "";
 
-    var errormsg2;
-		document.getElementById('gradstatus').value == "00" ? errormsg2 = " - DOE037 (Graduate) must be set to something other than 00" : errormsg2 = "";
+        var errormsg2;
+        document.getElementById('gradstatus').value == "00" ? errormsg2 = " - DOE037 (Graduate) must be set to something other than 00" : errormsg2 = "";
 
-		alert("When DOE012 (Enrollment Status) is set to Graduated: \n" + errormsg1 + errormsg2 );
-		closeLoading();
-		return false;
-	}
+        alert("When DOE012 (Enrollment Status) is set to Graduated: \n" + errormsg1 + errormsg2);
+        closeLoading();
+        return false;
+      }
 
-	if (document.getElementById('MA_SchoolCode').value == "" || document.getElementById('MA_AltEd').value == "") {
-		if (document.getElementById('MA_SchoolCode').value == "") {
-			var dist = "~(f.table_info;table=Prefs;dothisfor=ALL;fn=value;field=Value;fieldtype=INT;*Name=districtnumber;fixlen=4,0,3)";
-			var altNum = "~([Schools]Alternate_School_Number;nohtml)";
-			var schoolNum = "~([Students]schoolID;nohtml)";
-			var schCode = "";
-			if (altNum != "" && altNum != "0") {
-				if (altNum.length <= 4 ) {
-					altNum = '0000' + altNum;
-					schCode = dist + altNum.substring(altNum.length-4, altNum.length);
-				}	else {
-					altNum = '00000000' + altNum;
-					schCode = altNum.substring(altNum.length-8, altNum.length);
-				}
-      } else {
-        if (schoolNum.length <= 4) {
-          schoolNum = '0000' + schoolNum;
-          schCode = dist + schoolNum.substring(schoolNum.length-4, schoolNum.length);
-        } else {
-          schoolNum = '00000000' + schoolNum;
-          schCode = schoolNum.substring(schoolNum.length-8, schoolNum.length);
+      if (document.getElementById('MA_SchoolCode').value == "" || document.getElementById('MA_AltEd').value == "") {
+        if (document.getElementById('MA_SchoolCode').value == "") {
+          var dist = "~(f.table_info;table=Prefs;dothisfor=ALL;fn=value;field=Value;fieldtype=INT;*Name=districtnumber;fixlen=4,0,3)";
+          var altNum = "~([Schools]Alternate_School_Number;nohtml)";
+          var schoolNum = "~([Students]schoolID;nohtml)";
+          var schCode = "";
+          if (altNum != "" && altNum != "0") {
+            if (altNum.length <= 4) {
+              altNum = '0000' + altNum;
+              schCode = dist + altNum.substring(altNum.length - 4, altNum.length);
+            } else {
+              altNum = '00000000' + altNum;
+              schCode = altNum.substring(altNum.length - 8, altNum.length);
+            }
+          } else {
+            if (schoolNum.length <= 4) {
+              schoolNum = '0000' + schoolNum;
+              schCode = dist + schoolNum.substring(schoolNum.length - 4, schoolNum.length);
+            } else {
+              schoolNum = '00000000' + schoolNum;
+              schCode = schoolNum.substring(schoolNum.length - 8, schoolNum.length);
+            }
+          }
+          var MASchoolCode = document.getElementById('MA_SchoolCode');
+          MASchoolCode.value = '' + schCode + '';
         }
-			}
-	    var MASchoolCode = document.getElementById('MA_SchoolCode');
-			MASchoolCode.value = '' + schCode + '';
-		}
-    if (document.getElementById('MA_AltEd').value == "") {
-			var MAAltEd = document.getElementById('MA_AltEd');
-			MAAltEd.value = '00000000';
-		}
-	}
-  return true;
-}
+        if (document.getElementById('MA_AltEd').value == "") {
+          var MAAltEd = document.getElementById('MA_AltEd');
+          MAAltEd.value = '00000000';
+        }
+      }
+      return true;
+    }
 
-function checkStateStuNum(ele) {
-  document.getElementById('errormessage').innerHTML = "SASID must contain 10 numeric characters (0-9)";
-	if (isNaN(ele.value)) {
-    ele.value = "";
-  } else if (ele.value.length <= 10) {
-		document.getElementById('errormessage').innerHTML = "";
-	}
-	return false;
-}
-</script>
+    function checkStateStuNum(ele) {
+      document.getElementById('errormessage').innerHTML = "SASID must contain 10 numeric characters (0-9)";
+      if (isNaN(ele.value)) {
+        ele.value = "";
+      } else if (ele.value.length <= 10) {
+        document.getElementById('errormessage').innerHTML = "";
+      }
+      return false;
+    }
+  </script>
 </head>
 
 <form action="/admin/changesrecorded.white.html" method="POST" onsubmit="return checkDefaultInfo();">
-~[wc:admin_header_frame_css]<!-- breadcrumb start -->
-<a href="/admin/home.html" target="_top">Start Page</a> &gt;
-<a href="/admin/students/home.html?selectstudent=nosearch" target="_top">Student Selection</a> &gt;
-<a href="/admin/students/state/state~[displaypref:districtstate].html?frn=~(studentfrn)"> Massachusetts State Information</a> &gt;
-SIMS Data Elements<!-- breadcrumb end -->~[wc:admin_navigation_frame_css]
+  ~[wc:admin_header_frame_css]<!-- breadcrumb start -->
+  <a href="/admin/home.html" target="_top">Start Page</a> &gt;
+  <a href="/admin/students/home.html?selectstudent=nosearch" target="_top">Student Selection</a> &gt;
+  <a href="/admin/students/state/state~[displaypref:districtstate].html?frn=~(studentfrn)"> Massachusetts State
+    Information</a> &gt;
+  SIMS Data Elements<!-- breadcrumb end -->~[wc:admin_navigation_frame_css]
 
-~[wc:title_student_begin_css]SIMS Data Elements~[wc:title_student_end_css]
-~[SetPostValue:repType=SIMS]
-~[x:insertfile;MA_studenttabs.html]
-<!-- start of content and bounding box -->
-<div class="box-round">
-  <table border="0" cellspacing="0" cellpadding="4">
-    <tr>
-      <td class="bold">SPED Code</td>
-      <td><select name="[students.U_Students_Extension]SPED">
-			  <option value=""></option>
-			  <option value="No">No</option>
-			  <option value="Yes">Yes</option>
-			  <option value="Ref">Referral</option>
-			</select></td>
-    </tr>
-    <tr class="~[evenoddrow]">
-      <td class="bold">DOE011</td>
-      <td class="bold">Reason for Reporting</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_RptReason">
-        <option value="01">District financially resp (Resident and Enrolled/Receiving services) (01)</option>
-        <option value="02">District financially resp (Sending Private, Collaborative/out of State) (02)</option>
-        <option value="03">District not financially resp (Not Resident/Enrolled/Receiving Services) (03)</option>
-      </select></td>
-    </tr>
-    <tr class="~[evenoddrow]">
+  ~[wc:title_student_begin_css]SIMS Data Elements~[wc:title_student_end_css]
+  ~[SetPostValue:repType=SIMS]
+  ~[x:insertfile;MA_studenttabs.html]
+  <!-- start of content and bounding box -->
+  <div class="box-round">
+    <table border="0" cellspacing="0" cellpadding="4">
+      <tr>
+        <td class="bold">SPED Code</td>
+        <td><select name="[students.U_Students_Extension]SPED">
+            <option value=""></option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+            <option value="Ref">Referral</option>
+          </select></td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE011</td>
+        <td class="bold">Reason for Reporting</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_RptReason">
+            <option value="01">District financially resp (Resident and Enrolled/Receiving services) (01)</option>
+            <option value="02">District financially resp (Sending Private, Collaborative/out of State) (02)</option>
+            <option value="03">District not financially resp (Not Resident/Enrolled/Receiving Services) (03)</option>
+          </select></td>
+      </tr>
+      <tr class="~[evenoddrow]">
         <td class="bold">DOE012</td>
         <td class="bold">Enrollment Status at Time of Data Collection</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_EnrollStatus" id="enrollstatus">
-        <option value="01">Enrolled (01)</option>
-        <option value="04">Graduated (04)</option>
-        <option value="05">Permanent Exclusion (05)</option>
-        <option value="06">Deceased (06)</option>
-        <option value="09">Reached Max Age (09)</option>
-        <option value="10">Certificate of Attainment (10)</option>
-        <option value="11">Completed grade 12 and district-approved program (11)</option>
-        <option value="20">Transferred - In-state public (20)</option>
-        <option value="21">Transferred - In-state private (21)</option>
-        <option value="22">Transferred - Out-of-state (public or private) (22)</option>
-        <option value="23">Transferred - Home-school (23)</option>
-        <option value="24">Transferred - Adult Diploma program, leading to MA diploma (24)</option>
-        <option value="30">Dropout - Enrolled in non-diploma granting adult education program (30)</option>
-        <option value="31">Dropout - Entered Job Corps (31)</option>
-        <option value="32">Dropout - Entered the military (32)</option>
-        <option value="33">Dropout - Incarcerated, district not providing educational services (33)</option>
-        <option value="34">Dropout - Left due to employment (34)</option>
-        <option value="35">Dropout - Confirmed Dropout, plans unknown (35)</option>
-        <option value="36">Dropout - Student status/location unknown (36)</option>
-        <option value="40">Not enrolled but receiving special education services (40)</option>
-        <option value="41">Transferred - no longer receiving special education services only (41)</option>
-      </select></td>
-    </tr>
-    <tr class="~[evenoddrow]">
-      <td class="bold">DOE013</td>
-      <td class="bold">Reason for Enrollment</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_EnrollCode">
-        <option value="01">Resident (01)</option>
-        <option value="02">School Choice (02)</option>
-        <option value="03">Charter (03)</option>
-        <option value="04">METCO (04)</option>
-        <option value="05">Tuitioned in - Chapter 74 (05)</option>
-        <option value="06">Tuitioned - Out of State (06)</option>
-        <option value="07">Tuitioned - Private/Collaborative (07)</option>
-        <option value="08">Tuitioned in - Parent Paid (08)</option>
-        <option value="09">Tuitioned in - Waived by Local Agreement (09)</option>
-        <option value="10">Tuitioned in - Agreement with Other District (10)</option>
-        <option value="11">Foreign Exchange student (11)</option>
-      </select></td>
-    </tr>
-    <tr class="~[evenoddrow]">
-      <td class="bold">DOE015</td>
-      <td><span class="bold">School Identification Number</span> (report uses School Code if specified otherwise uses District Number + School Number)</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>School Code</td>
-      <td><input type="text" name="[Students]MA_SchoolCode" id="MA_SchoolCode" size="8" maxlength="8" value="">
-      <script type="text/javascript">
-        var dist = "~(f.table_info;table=Prefs;dothisfor=ALL;fn=value;field=Value;fieldtype=INT;query=([Prefs]Name.eq.districtnumber);fixlen=4,0,3)";
-        var altNum = "~([Schools]Alternate_School_Number;nohtml)";
-        var schoolNum = "~([Students]schoolID;nohtml)";
-        var schCode = "";
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_EnrollStatus" id="enrollstatus">
+            <option value="01">Enrolled (01)</option>
+            <option value="04">Graduated (04)</option>
+            <option value="05">Permanent Exclusion (05)</option>
+            <option value="06">Deceased (06)</option>
+            <option value="09">Reached Max Age (09)</option>
+            <option value="10">Certificate of Attainment (10)</option>
+            <option value="11">Completed grade 12 and district-approved program (11)</option>
+            <option value="20">Transferred - In-state public (20)</option>
+            <option value="21">Transferred - In-state private (21)</option>
+            <option value="22">Transferred - Out-of-state (public or private) (22)</option>
+            <option value="23">Transferred - Home-school (23)</option>
+            <option value="24">Transferred - Adult Diploma program, leading to MA diploma (24)</option>
+            <option value="30">Dropout - Enrolled in non-diploma granting adult education program (30)</option>
+            <option value="31">Dropout - Entered Job Corps (31)</option>
+            <option value="32">Dropout - Entered the military (32)</option>
+            <option value="33">Dropout - Incarcerated, district not providing educational services (33)</option>
+            <option value="34">Dropout - Left due to employment (34)</option>
+            <option value="35">Dropout - Confirmed Dropout, plans unknown (35)</option>
+            <option value="36">Dropout - Student status/location unknown (36)</option>
+            <option value="40">Not enrolled but receiving special education services (40)</option>
+            <option value="41">Transferred - no longer receiving special education services only (41)</option>
+          </select></td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE013</td>
+        <td class="bold">Reason for Enrollment</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_EnrollCode">
+            <option value="01">Resident (01)</option>
+            <option value="02">School Choice (02)</option>
+            <option value="03">Charter (03)</option>
+            <option value="04">METCO (04)</option>
+            <option value="05">Tuitioned in - Chapter 74 (05)</option>
+            <option value="06">Tuitioned - Out of State (06)</option>
+            <option value="07">Tuitioned - Private/Collaborative (07)</option>
+            <option value="08">Tuitioned in - Parent Paid (08)</option>
+            <option value="09">Tuitioned in - Waived by Local Agreement (09)</option>
+            <option value="10">Tuitioned in - Agreement with Other District (10)</option>
+            <option value="11">Foreign Exchange student (11)</option>
+          </select></td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE015</td>
+        <td><span class="bold">School Identification Number</span> (report uses School Code if specified otherwise uses
+          District Number + School Number)</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>School Code</td>
+        <td><input type="text" name="[Students]MA_SchoolCode" id="MA_SchoolCode" size="8" maxlength="8" value="">
+          <script type="text/javascript">
+            var dist = "~(f.table_info;table=Prefs;dothisfor=ALL;fn=value;field=Value;fieldtype=INT;query=([Prefs]Name.eq.districtnumber);fixlen=4,0,3)";
+            var altNum = "~([Schools]Alternate_School_Number;nohtml)";
+            var schoolNum = "~([Students]schoolID;nohtml)";
+            var schCode = "";
 
-        if (altNum != "" && altNum != "0") {
-          if (altNum.length <= 4 ) {
-            altNum = "0000" + altNum;
-            schCode = dist + altNum.substring(altNum.length-4, altNum.length);
-          } else {
-            altNum = "00000000" + altNum;
-            schCode = altNum.substring(altNum.length-8, altNum.length);
-          }
-          } else {
-            if (schoolNum.length <= 4) {
-              schoolNum = "0000" + schoolNum;
-              schCode = dist + schoolNum.substring(schoolNum.length-4, schoolNum.length);
+            if (altNum != "" && altNum != "0") {
+              if (altNum.length <= 4) {
+                altNum = "0000" + altNum;
+                schCode = dist + altNum.substring(altNum.length - 4, altNum.length);
+              } else {
+                altNum = "00000000" + altNum;
+                schCode = altNum.substring(altNum.length - 8, altNum.length);
+              }
             } else {
-              schoolNum = "00000000" + schoolNum;
-              schCode = schoolNum.substring(schoolNum.length-8, schoolNum.length);
+              if (schoolNum.length <= 4) {
+                schoolNum = "0000" + schoolNum;
+                schCode = dist + schoolNum.substring(schoolNum.length - 4, schoolNum.length);
+              } else {
+                schoolNum = "00000000" + schoolNum;
+                schCode = schoolNum.substring(schoolNum.length - 8, schoolNum.length);
+              }
             }
-          }
-      </script>
-      <br>
-      (if not defined, "<script type="text/javascript"> document.write(schCode); </script>" is extracted)</td>
-    </tr>
-    <tr class="~[evenoddrow]">
-      <td class="bold">DOE016</td>
-      <td><span class="bold">Grade Level</span> (the report uses the following three fields to determine grade level)</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>Grade Level</td>
-      <td>~([Students]Grade_Level) (for the current enrollment)</td>
-		</tr>
-    <tr class="~[evenoddrow]">
-      <td class="bold">DOE032</td>
-      <td class="bold">Special Education Placement, Ages 3-5</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_SpecEd35">
-        <option value="00">Not a Special Education Student, age 3-5 (00)</option>
-        <option value="01">Not currently a Spec Ed student age 3-5 but was previously (01)</option>
-        <option value="05">3-5 year olds, Gen Ed students serving as role models in Pre-K (05)</option>
-        <option value="30">10 or more hrs/wk in EC and receives 50% or less of IEP services in regular EC program (30)</option>
-        <option value="30">10 or more hrs/wk in EC and receives 50% or less of IEP services in regular EC program (30)</option>
-        <option value="31">10 or more hrs/wk in EC and receives 51% or more of IEP services in regular EC program (31)</option>
-        <option value="32">Less than 10 hrs/wk in EC and receives 50% or less of IEP services in regular EC program (32)</option>
-        <option value="34">Less than 10 hrs/wk in EC and receives 51% or more of IEP services in regular EC program (34)</option>
-        <option value="36">Substantially Separate Class (previously 40) (36)</option>
-        <option value="38">Public Separate School (previously 41) (38)</option>
-        <option value="42">Private Separate Day (previously 50) (42)</option>
-        <option value="44">Residential Facility (previously 60) (44)</option>
-        <option value="45">Public Res Institutional Facilities, 0370XXXX schools (previously 90) (45)</option>
-        <option value="46">Home (previously 70) (46)</option>
-        <option value="48">Service provider location (48)</option>
-      </select><br>(if not defined, "00" is extracted)</td>
-    </tr>
-    <tr class="~[evenoddrow]">
-      <td class="bold">DOE034</td>
-      <td class="bold">Special Education Placement, Ages 6-21</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_SpecEd621">
-        <option value="00">Not a Special Education Student, age 6-21 (00)</option>
-        <option value="01">Not currently Spec Ed student age 6-21, but was previously (01)</option>
-        <option value="10">Full Inclusion - services outside gen ed less than 21% of the time (10)</option>
-        <option value="20">Partial Inclusion - services outside gen ed 21% to 60% of the time (20)</option>
-        <option value="40">Substantially Separate Class - services outside gen ed more than 60% (40)</option>
-        <option value="41">Public Separate Day School (41)</option>
-        <option value="50">Private Separate Day School (50)</option>
-        <option value="60">Residential School (60)</option>
-        <option value="70">Homebound/Hospital (70)</option>
-        <option value="90">Public Residential Institutional Facilities (0370XXXX schools) (90)</option>
-      </select><br>Previous DOE034 value "~([Students]MA_SpedInfo)"<br>(if not defined, "00" is extracted)</td>
-    </tr>
-	  <tr class="~[evenoddrow]">
-      <td class="bold">DOE036</td>
-      <td class="bold">Special Education - Nature of Primary Disability</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_PrimDisabil">
-        <option value="500">Does not apply to student (500)</option>
-        <option value="01">Intellectual (01)</option>
-        <option value="02">Sensory/Hard of Hearing or Deaf (02)</option>
-        <option value="03">Communication (03)</option>
-        <option value="04">Sensory/Vision Impairment or Blind (04)</option>
-        <option value="05">Emotional (05)</option>
-        <option value="06">Physical (06)</option>
-        <option value="07">Health (07)</option>
-        <option value="08">Specific Learning Disabilities (08)</option>
-        <option value="09">Sensory/Deafblind (09)</option>
-        <option value="10">Multiple Disabilities (10)</option>
-        <option value="11">Autism (11)</option>
-        <option value="12">Neurological (12)</option>
-        <option value="13">Developmental Delay (13)</option>
-      </select><br>(if not defined, "500" is extracted)</td>
-    </tr>
-		<tr class="~[evenoddrow]">
-      <td class="bold">DOE038</td>
-      <td class="bold">Special Education - Level of  Need</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_LevNeed">
-        <option value="500">Does not apply to student (500)</option>
-        <option value="01">Low - Less than 2 hours  of service per week (01)</option>
-        <option value="02">Low - 2 hours or more of services per week (02)</option>
-        <option value="03">Moderate (03)</option>
-        <option value="04">High (04)</option>
-      </select><br>(if not defined, "500" is extracted)</td>
-    </tr>
-		<tr class="~[evenoddrow]">
-      <td class="bold">DOE040</td>
-      <td class="bold">Special Education Evaluation Results</td>
-    </tr>
-    <tr class="~[evenoddrow;maintain]">
-      <td>&nbsp;</td>
-      <td><select name="[Students]MA_SpEdEvaluationRes">
-        <option value="00">Not Spec Ed and not evaluated in current school year (00)</option>
-        <option value="01">Continuing Spec Ed not been evaluated in current school year (01)</option>
-        <option value="02">Initial evaluation result-not eligible for Spec Ed services (02)</option>
-        <option value="03">Re-evaluation result-no longer eligible for Spec Ed services (03)</option>
-        <option value="04">Initial eval result-eligible for Spec Ed serv req specially designed instr (04)</option>
-        <option value="05">Initial eval result-eligible for Spec Ed services req only related services (05)</option>
-        <option value="06">Re-eval result-eligible req specially designed instr w/wo/related services (06)</option>
-        <option value="07">Re-evaluation result-eligible req only related services (07)</option>
-        <option value="08">Initial evaluation in process at time of data reporting (08)</option>
-        <option value="09">Student evaluated and found eligible but parent/guardian declined (09)</option>
-      </select><br>(if not defined, "00" is extracted)</td>
-    </tr>
-  </table>
-  <div class="button-row"><input type="hidden" name="ac" value="prim">~[submitbutton]</div>
-</div>
-<!-- end of content of bounding box -->
-~[wc:admin_footer_frame_css]
+          </script>
+          <br>
+          (if not defined, "
+          <script type="text/javascript"> document.write(schCode); </script>" is extracted)
+        </td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE016</td>
+        <td><span class="bold">Grade Level</span> (the report uses the following three fields to determine grade level)
+        </td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>Grade Level</td>
+        <td>~([Students]Grade_Level) (for the current enrollment)</td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE032</td>
+        <td class="bold">Special Education Placement, Ages 3-5</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_SpecEd35">
+            <option value="00">Not a Special Education Student, age 3-5 (00)</option>
+            <option value="01">Not currently a Spec Ed student age 3-5 but was previously (01)</option>
+            <option value="05">3-5 year olds, Gen Ed students serving as role models in Pre-K (05)</option>
+            <option value="30">10 or more hrs/wk in EC and receives 50% or less of IEP services in regular EC program
+              (30)</option>
+            <option value="30">10 or more hrs/wk in EC and receives 50% or less of IEP services in regular EC program
+              (30)</option>
+            <option value="31">10 or more hrs/wk in EC and receives 51% or more of IEP services in regular EC program
+              (31)</option>
+            <option value="32">Less than 10 hrs/wk in EC and receives 50% or less of IEP services in regular EC program
+              (32)</option>
+            <option value="34">Less than 10 hrs/wk in EC and receives 51% or more of IEP services in regular EC program
+              (34)</option>
+            <option value="36">Substantially Separate Class (previously 40) (36)</option>
+            <option value="38">Public Separate School (previously 41) (38)</option>
+            <option value="42">Private Separate Day (previously 50) (42)</option>
+            <option value="44">Residential Facility (previously 60) (44)</option>
+            <option value="45">Public Res Institutional Facilities, 0370XXXX schools (previously 90) (45)</option>
+            <option value="46">Home (previously 70) (46)</option>
+            <option value="48">Service provider location (48)</option>
+          </select><br>(if not defined, "00" is extracted)</td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE034</td>
+        <td class="bold">Special Education Placement, Ages 6-21</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_SpecEd621">
+            <option value="00">Not a Special Education Student, age 6-21 (00)</option>
+            <option value="01">Not currently Spec Ed student age 6-21, but was previously (01)</option>
+            <option value="10">Full Inclusion - services outside gen ed less than 21% of the time (10)</option>
+            <option value="20">Partial Inclusion - services outside gen ed 21% to 60% of the time (20)</option>
+            <option value="40">Substantially Separate Class - services outside gen ed more than 60% (40)</option>
+            <option value="41">Public Separate Day School (41)</option>
+            <option value="50">Private Separate Day School (50)</option>
+            <option value="60">Residential School (60)</option>
+            <option value="70">Homebound/Hospital (70)</option>
+            <option value="90">Public Residential Institutional Facilities (0370XXXX schools) (90)</option>
+          </select><br>Previous DOE034 value "~([Students]MA_SpedInfo)"<br>(if not defined, "00" is extracted)</td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE036</td>
+        <td class="bold">Special Education - Nature of Primary Disability</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_PrimDisabil">
+            <option value="500">Does not apply to student (500)</option>
+            <option value="01">Intellectual (01)</option>
+            <option value="02">Sensory/Hard of Hearing or Deaf (02)</option>
+            <option value="03">Communication (03)</option>
+            <option value="04">Sensory/Vision Impairment or Blind (04)</option>
+            <option value="05">Emotional (05)</option>
+            <option value="06">Physical (06)</option>
+            <option value="07">Health (07)</option>
+            <option value="08">Specific Learning Disabilities (08)</option>
+            <option value="09">Sensory/Deafblind (09)</option>
+            <option value="10">Multiple Disabilities (10)</option>
+            <option value="11">Autism (11)</option>
+            <option value="12">Neurological (12)</option>
+            <option value="13">Developmental Delay (13)</option>
+          </select><br>(if not defined, "500" is extracted)</td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE038</td>
+        <td class="bold">Special Education - Level of Need</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_LevNeed">
+            <option value="500">Does not apply to student (500)</option>
+            <option value="01">Low - Less than 2 hours of service per week (01)</option>
+            <option value="02">Low - 2 hours or more of services per week (02)</option>
+            <option value="03">Moderate (03)</option>
+            <option value="04">High (04)</option>
+          </select><br>(if not defined, "500" is extracted)</td>
+      </tr>
+      <!-- Added DOE039 - 504 Plan Status- John S. 3/27/25 -->
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE039</td>
+        <td class="bold" title="[Students.S_MA_STU_SPED_X]Sec504PlanStatus">504 Plan Status</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students.S_MA_STU_SPED_X]Sec504PlanStatus" id="MA_504PlanStatus">
+            ~[if.ModAccess]
+            ~[tlist_sql;
+            SELECT
+            code,
+            className,
+            selected,
+            disabled,
+            description
+            FROM
+            TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_504PlanStatus','~([Students.S_MA_STU_SPED_X]Sec504PlanStatus)',~(curtermid),'BU'));
+            ] <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>
+            [/tlist_sql]
+            [else]
+            ~[tlist_sql;
+            SELECT description
+            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY ='MA_504PlanStatus'
+            AND code = '~([Students.S_MA_STU_SPED_X]Sec504PlanStatus)']
+            ~(description)
+
+            [/tlist_sql]
+            [/if]
+
+          </select><span id="nonEditSpan_MA_504PlanStatus"></span><br>(if not defined, "00" is extracted)</td>
+      </tr>
+      <tr class="~[evenoddrow]">
+        <td class="bold">DOE040</td>
+        <td class="bold">Special Education Evaluation Results</td>
+      </tr>
+      <tr class="~[evenoddrow;maintain]">
+        <td>&nbsp;</td>
+        <td><select name="[Students]MA_SpEdEvaluationRes">
+            <option value="00">Not Spec Ed and not evaluated in current school year (00)</option>
+            <option value="01">Continuing Spec Ed not been evaluated in current school year (01)</option>
+            <option value="02">Initial evaluation result-not eligible for Spec Ed services (02)</option>
+            <option value="03">Re-evaluation result-no longer eligible for Spec Ed services (03)</option>
+            <option value="04">Initial eval result-eligible for Spec Ed serv req specially designed instr (04)</option>
+            <option value="05">Initial eval result-eligible for Spec Ed services req only related services (05)</option>
+            <option value="06">Re-eval result-eligible req specially designed instr w/wo/related services (06)</option>
+            <option value="07">Re-evaluation result-eligible req only related services (07)</option>
+            <option value="08">Initial evaluation in process at time of data reporting (08)</option>
+            <option value="09">Student evaluated and found eligible but parent/guardian declined (09)</option>
+          </select><br>(if not defined, "00" is extracted)</td>
+      </tr>
+    </table>
+    <div class="button-row"><input type="hidden" name="ac" value="prim">~[submitbutton]</div>
+  </div>
+  <!-- end of content of bounding box -->
+  ~[wc:admin_footer_frame_css]
 </form>
 </body>
+
 </html><!-- end right frame -->
