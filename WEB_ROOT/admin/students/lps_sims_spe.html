@@ -295,113 +295,153 @@ function checkStateStuNum(ele) {
             <option value="48">Service provider location (48)</option>
           </select><br>(if not defined, "00" is extracted)</td>
       </tr>
-      <tr class="~[evenoddrow]">
-        <td class="bold">DOE034</td>
-        <td class="bold">Special Education Placement, Ages 6-21</td>
-      </tr>
-      <tr class="~[evenoddrow;maintain]">
-        <td>&nbsp;</td>
-        <td><select name="[Students]MA_SpecEd621">
-            <option value="00">Not a Special Education Student, age 6-21 (00)</option>
-            <option value="01">Not currently Spec Ed student age 6-21, but was previously (01)</option>
-            <option value="10">Full Inclusion - services outside gen ed less than 21% of the time (10)</option>
-            <option value="20">Partial Inclusion - services outside gen ed 21% to 60% of the time (20)</option>
-            <option value="40">Substantially Separate Class - services outside gen ed more than 60% (40)</option>
-            <option value="41">Public Separate Day School (41)</option>
-            <option value="50">Private Separate Day School (50)</option>
-            <option value="60">Residential School (60)</option>
-            <option value="70">Homebound/Hospital (70)</option>
-            <option value="90">Public Residential Institutional Facilities (0370XXXX schools) (90)</option>
-          </select><br>Previous DOE034 value "~([Students]MA_SpedInfo)"<br>(if not defined, "00" is extracted)</td>
-      </tr>
-      <tr class="~[evenoddrow]">
-        <td class="bold">DOE036</td>
-        <td class="bold">Special Education - Nature of Primary Disability</td>
-      </tr>
-      <tr class="~[evenoddrow;maintain]">
-        <td>&nbsp;</td>
-        <td><select name="[Students]MA_PrimDisabil">
-            <option value="500">Does not apply to student (500)</option>
-            <option value="01">Intellectual (01)</option>
-            <option value="02">Sensory/Hard of Hearing or Deaf (02)</option>
-            <option value="03">Communication (03)</option>
-            <option value="04">Sensory/Vision Impairment or Blind (04)</option>
-            <option value="05">Emotional (05)</option>
-            <option value="06">Physical (06)</option>
-            <option value="07">Health (07)</option>
-            <option value="08">Specific Learning Disabilities (08)</option>
-            <option value="09">Sensory/Deafblind (09)</option>
-            <option value="10">Multiple Disabilities (10)</option>
-            <option value="11">Autism (11)</option>
-            <option value="12">Neurological (12)</option>
-            <option value="13">Developmental Delay (13)</option>
-          </select><br>(if not defined, "500" is extracted)</td>
-      </tr>
-      <tr class="~[evenoddrow]">
-        <td class="bold">DOE038</td>
-        <td class="bold">Special Education - Level of Need</td>
-      </tr>
-      <tr class="~[evenoddrow;maintain]">
-        <td>&nbsp;</td>
-        <td><select name="[Students]MA_LevNeed">
-            <option value="500">Does not apply to student (500)</option>
-            <option value="01">Low - Less than 2 hours of service per week (01)</option>
-            <option value="02">Low - 2 hours or more of services per week (02)</option>
-            <option value="03">Moderate (03)</option>
-            <option value="04">High (04)</option>
-          </select><br>(if not defined, "500" is extracted)</td>
-      </tr>
-      <!-- Added DOE039 - 504 Plan Status- John S. 3/27/25 -->
-      <tr class="~[evenoddrow]">
-        <td class="bold">DOE039</td>
-        <td class="bold" title="[Students.S_MA_STU_SPED_X]Sec504PlanStatus">504 Plan Status</td>
-      </tr>
-      <tr class="~[evenoddrow;maintain]">
-        <td>&nbsp;</td>
-        <td><select name="[Students.S_MA_STU_SPED_X]Sec504PlanStatus" id="MA_504PlanStatus">
-            ~[if.ModAccess]
+<tr class="~[evenoddrow]">
+<td class="bold">DOE034</td>
+<td class="bold" title="[Students.S_MA_STU_SPED_X]SPED6to21Placement">Special Education Placement, Ages 6-21</td>
+</tr>
+<tr class="~[evenoddrow;maintain]">
+<td>&nbsp;</td>
+<td><select name="[Students.S_MA_STU_SPED_X]SPED6to21Placement" id="MA_SpecEd621">
+ ~[if.ModAccess]
             ~[tlist_sql;
-            SELECT
-            code,
-            className,
-            selected,
-            disabled,
-            description
-            FROM
-            TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_504PlanStatus','~([Students.S_MA_STU_SPED_X]Sec504PlanStatus)',~(curtermid),'BU'));
-            ] <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>
-            [/tlist_sql]
-            [else]
-            ~[tlist_sql;
+           SELECT
+               code,
+               className,
+               selected,
+               disabled,
+               description
+           FROM
+               TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_SpecEd621','~([Students.S_MA_STU_SPED_X]SPED6to21Placement)',~(curtermid),'BU'));
+       ]    <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>[/tlist_sql]
+        [else]
+        ~[tlist_sql;
             SELECT description
-            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY ='MA_504PlanStatus'
+            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY  ='MA_SpecEd621'
+            AND code = '~([Students.S_MA_STU_SPED_X]SPED6to21Placement)']
+        ~(description)
+            
+        [/tlist_sql]
+    [/if] 
+</select><span id="nonEditSpan_MA_SpecEd621"></span>
+<br>(if not defined, "00" is extracted)</td>
+</tr>
+<tr class="~[evenoddrow]">
+<td class="bold">DOE036</td>
+<td class="bold" title="[Students.S_MA_STU_SPED_X]PrimaryDisability">Special Education - Nature of Primary Disability</td>
+</tr>
+<tr class="~[evenoddrow;maintain]">
+<td>&nbsp;</td>
+<td><select name="[Students.S_MA_STU_SPED_X]PrimaryDisability" id="MA_PrimDisabil">
+ ~[if.ModAccess]
+            ~[tlist_sql;
+           SELECT
+               code,
+               className,
+               selected,
+               disabled,
+               description
+           FROM
+               TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_PrimDisabil','~([Students.S_MA_STU_SPED_X]PrimaryDisability)',~(curtermid),'BU'));
+       ]    <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>[/tlist_sql]
+        [else]
+        ~[tlist_sql;
+            SELECT description
+            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY  ='MA_PrimDisabil'
+            AND code = '~([Students.S_MA_STU_SPED_X]PrimaryDisability)']
+        ~(description)
+            
+        [/tlist_sql]
+    [/if]  
+</select><span id="nonEditSpan_MA_PrimDisabil"></span><br>(if not defined, "500" is extracted)</td>
+</tr>
+<tr class="~[evenoddrow]">
+<td class="bold">DOE038</td>
+<td class="bold" title="[Students.S_MA_STU_SPED_X]LevelOfNeed">Special Education - Level of  Need</td>
+</tr>
+<tr class="~[evenoddrow;maintain]">
+<td>&nbsp;</td>
+ <td><select name="[Students.S_MA_STU_SPED_X]LevelOfNeed" id="MA_LevNeed">
+ ~[if.ModAccess]
+            ~[tlist_sql;
+           SELECT
+               code,
+               className,
+               selected,
+               disabled,
+               description
+           FROM
+               TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_LevNeed','~([Students.S_MA_STU_SPED_X]LevelOfNeed)',~(curtermid),'BU'));
+       ]    <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>[/tlist_sql]
+        [else]
+        ~[tlist_sql;
+            SELECT description
+            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY  ='MA_LevNeed'
+            AND code = '~([Students.S_MA_STU_SPED_X]LevelOfNeed)']
+        ~(description)
+            
+        [/tlist_sql]
+    [/if]  
+</select><span id="nonEditSpan_MA_LevNeed"></span><br>(if not defined, "500" is extracted)</td>
+</tr>
+<tr class="~[evenoddrow]">
+<td class="bold">DOE039</td>
+<td class="bold" title="[Students.S_MA_STU_SPED_X]Sec504PlanStatus">504 Plan Status</td>
+</tr>
+<tr class="~[evenoddrow;maintain]">
+<td>&nbsp;</td>
+<td><select name="[Students.S_MA_STU_SPED_X]Sec504PlanStatus" id="MA_504PlanStatus">
+ ~[if.ModAccess]
+            ~[tlist_sql;
+           SELECT
+               code,
+               className,
+               selected,
+               disabled,
+               description
+           FROM
+               TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_504PlanStatus','~([Students.S_MA_STU_SPED_X]Sec504PlanStatus)',~(curtermid),'BU'));
+       ]    <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>[/tlist_sql]
+        [else]
+        ~[tlist_sql;
+            SELECT description
+            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY  ='MA_504PlanStatus'
             AND code = '~([Students.S_MA_STU_SPED_X]Sec504PlanStatus)']
-            ~(description)
+        ~(description)
+            
+        [/tlist_sql]
+    [/if]  
 
-            [/tlist_sql]
-            [/if]
-
-          </select><span id="nonEditSpan_MA_504PlanStatus"></span><br>(if not defined, "00" is extracted)</td>
-      </tr>
-      <tr class="~[evenoddrow]">
-        <td class="bold">DOE040</td>
-        <td class="bold">Special Education Evaluation Results</td>
-      </tr>
-      <tr class="~[evenoddrow;maintain]">
-        <td>&nbsp;</td>
-        <td><select name="[Students]MA_SpEdEvaluationRes">
-            <option value="00">Not Spec Ed and not evaluated in current school year (00)</option>
-            <option value="01">Continuing Spec Ed not been evaluated in current school year (01)</option>
-            <option value="02">Initial evaluation result-not eligible for Spec Ed services (02)</option>
-            <option value="03">Re-evaluation result-no longer eligible for Spec Ed services (03)</option>
-            <option value="04">Initial eval result-eligible for Spec Ed serv req specially designed instr (04)</option>
-            <option value="05">Initial eval result-eligible for Spec Ed services req only related services (05)</option>
-            <option value="06">Re-eval result-eligible req specially designed instr w/wo/related services (06)</option>
-            <option value="07">Re-evaluation result-eligible req only related services (07)</option>
-            <option value="08">Initial evaluation in process at time of data reporting (08)</option>
-            <option value="09">Student evaluated and found eligible but parent/guardian declined (09)</option>
-          </select><br>(if not defined, "00" is extracted)</td>
-      </tr>
+</select><span id="nonEditSpan_MA_504PlanStatus"></span><br>(if not defined, "00" is extracted)</td>
+</tr>
+<tr class="~[evenoddrow]">
+<td class="bold">DOE040</td>
+<td class="bold" title="[Students.S_MA_STU_SPED_X]SPEDEvaluationResults">Special Education Evaluation Results</td>
+</tr>
+<tr class="~[evenoddrow;maintain]">
+<td>&nbsp;</td>
+<td><select name="[Students.S_MA_STU_SPED_X]SPEDEvaluationResults" id="MA_SpEdEvaluationRes">
+ ~[if.ModAccess]
+            ~[tlist_sql;
+           SELECT
+               code,
+               className,
+               selected,
+               disabled,
+               description
+           FROM
+               TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_SpEdEvaluationRes','~([Students.S_MA_STU_SPED_X]SPEDEvaluationResults)',~(curtermid),'BU'));
+       ]    <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>[/tlist_sql]
+        [else]
+        ~[tlist_sql;
+            SELECT description
+            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY  ='MA_SpEdEvaluationRes'
+            AND code = '~([Students.S_MA_STU_SPED_X]SPEDEvaluationResults)']
+        ~(description)
+            
+        [/tlist_sql]
+    [/if]
+</select><span id="nonEditSpan_MA_SpEdEvaluationRes"></span><br>(if not defined, "00" is extracted)</td>
+</tr>
     </table>
     <div class="button-row"><input type="hidden" name="ac" value="prim">~[submitbutton]</div>
   </div>
