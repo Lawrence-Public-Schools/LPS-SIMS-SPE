@@ -18,65 +18,97 @@
 -->
   <script type="text/javascript">
 
-    function checkDefaultInfo() {
-      if (document.getElementById('enrollstatus').value == "04"
-        && (document.getElementById('futureplans').value == "500"
-          || document.getElementById('gradstatus').value == "00")
-      ) {
-        var errormsg1;
-        document.getElementById('futureplans').value == "500" ? errormsg1 = " - DOE033 (Post Graduate Plans) must be set to something other than 500 \n" : errormsg1 = "";
+function checkDefaultInfo()  
+{
+	if(document.getElementById('enrollstatus').value == "04"
+	&& (document.getElementById('futureplans').value == "500"
+		|| document.getElementById('gradstatus').value == "00"))
+	{	var errormsg1 = "";
+		if(document.getElementById('futureplans').value == "500"){
+			errormsg1 = " - DOE033 (Post Graduate Plans) must be set to something other than 500 \n";
+		}
+		var errormsg2 = "";
+		if(document.getElementById('gradstatus').value == "00"){
+			errormsg2 = " - DOE037 (Graduate) must be set to something other than 00";
+		}
+		alert("When DOE012 (Enrollment Status) is set to Graduated: \n" + errormsg1 + errormsg2 );
+		closeLoading();
+		return false;
+	}
 
-        var errormsg2;
-        document.getElementById('gradstatus').value == "00" ? errormsg2 = " - DOE037 (Graduate) must be set to something other than 00" : errormsg2 = "";
 
-        alert("When DOE012 (Enrollment Status) is set to Graduated: \n" + errormsg1 + errormsg2);
-        closeLoading();
-        return false;
-      }
-
-      if (document.getElementById('MA_SchoolCode').value == "" || document.getElementById('MA_AltEd').value == "") {
-        if (document.getElementById('MA_SchoolCode').value == "") {
-          var dist = "~(f.table_info;table=Prefs;dothisfor=ALL;fn=value;field=Value;fieldtype=INT;*Name=districtnumber;fixlen=4,0,3)";
-          var altNum = "~([Schools]Alternate_School_Number;nohtml)";
-          var schoolNum = "~([Students]schoolID;nohtml)";
-          var schCode = "";
-          if (altNum != "" && altNum != "0") {
-            if (altNum.length <= 4) {
-              altNum = '0000' + altNum;
-              schCode = dist + altNum.substring(altNum.length - 4, altNum.length);
-            } else {
-              altNum = '00000000' + altNum;
-              schCode = altNum.substring(altNum.length - 8, altNum.length);
+/* Autocalculate is currently disabled for PSSR-218671.	
+/*		
+	if(document.getElementById('MA_SchoolCode').value=="" || document.getElementById('MA_AltEd').value=="")
+	{
+		if(document.getElementById('MA_SchoolCode').value=="")
+		{
+			var dist = "~(f.table_info;table=Prefs;dothisfor=ALL;fn=value;field=Value;fieldtype=INT;*Name=districtnumber;fixlen=4,0,3)";
+			var altNum = "~([Schools]Alternate_School_Number;nohtml)";
+			var schoolNum = "~([Students]schoolID;nohtml)";
+			var schCode = "";
+			if (altNum != "" && altNum != "0")
+			{
+				if (altNum.length <= 4 )
+				{
+					altNum = '0000' + altNum;
+					schCode = dist + altNum.substring(altNum.length-4, altNum.length);
+				}
+				else
+				{
+					altNum = '00000000' + altNum;
+					schCode = altNum.substring(altNum.length-8, altNum.length);
+				}
             }
-          } else {
-            if (schoolNum.length <= 4) {
-              schoolNum = '0000' + schoolNum;
-              schCode = dist + schoolNum.substring(schoolNum.length - 4, schoolNum.length);
-            } else {
-              schoolNum = '00000000' + schoolNum;
-              schCode = schoolNum.substring(schoolNum.length - 8, schoolNum.length);
-            }
-          }
-          var MASchoolCode = document.getElementById('MA_SchoolCode');
-          MASchoolCode.value = '' + schCode + '';
-        }
-        if (document.getElementById('MA_AltEd').value == "") {
-          var MAAltEd = document.getElementById('MA_AltEd');
-          MAAltEd.value = '00000000';
-        }
-      }
-      return true;
-    }
+            else
+            {
+                if (schoolNum.length <= 4)
+                {
+                    schoolNum = '0000' + schoolNum;
+                    schCode = dist + schoolNum.substring(schoolNum.length-4, schoolNum.length);
+                }
+                else
+                {
+                    schoolNum = '00000000' + schoolNum;
+                    schCode = schoolNum.substring(schoolNum.length-8, schoolNum.length);
+                }
+			}
+			var MASchoolCode = document.getElementById('MA_SchoolCode');
+			MASchoolCode.value = '' + schCode + '';
+		}
+		if(document.getElementById('MA_AltEd').value=="")
+		{
+			var MAAltEd = document.getElementById('MA_AltEd');
+			MAAltEd.value = '00000000';
+		}
+		return true;
+	}
+	else
+	{
+		return true;
+	}
+*/
+}
 
-    function checkStateStuNum(ele) {
-      document.getElementById('errormessage').innerHTML = "SASID must contain 10 numeric characters (0-9)";
-      if (isNaN(ele.value)) {
-        ele.value = "";
-      } else if (ele.value.length <= 10) {
-        document.getElementById('errormessage').innerHTML = "";
-      }
-      return false;
-    }
+function checkStateStuNum(ele) {
+	if (isNaN(ele.value))
+	{
+		document.getElementById('errormessage').innerHTML="SASID must contain 10 numeric characters (0-9)";
+		ele.value="";
+	}
+	else
+	{
+		if (ele.value.length<10)
+		{
+			document.getElementById('errormessage').innerHTML="SASID must contain 10 numeric characters (0-9)";
+		}
+		else 
+		{
+			document.getElementById('errormessage').innerHTML="";
+		}
+	}
+	return false;
+}
   </script>
 </head>
 
@@ -145,26 +177,35 @@
             <option value="41">Transferred - no longer receiving special education services only (41)</option>
           </select></td>
       </tr>
-      <tr class="~[evenoddrow]">
+   <tr class="~[evenoddrow]">
         <td class="bold">DOE013</td>
-        <td class="bold">Reason for Enrollment</td>
-      </tr>
-      <tr class="~[evenoddrow;maintain]">
+        <td class="bold" title="[Students.S_MA_STU_X]ReasonForEnrollment">Reason for Enrollment</td>
+    </tr>
+    <tr class="~[evenoddrow;maintain]">
         <td>&nbsp;</td>
-        <td><select name="[Students]MA_EnrollCode">
-            <option value="01">Resident (01)</option>
-            <option value="02">School Choice (02)</option>
-            <option value="03">Charter (03)</option>
-            <option value="04">METCO (04)</option>
-            <option value="05">Tuitioned in - Chapter 74 (05)</option>
-            <option value="06">Tuitioned - Out of State (06)</option>
-            <option value="07">Tuitioned - Private/Collaborative (07)</option>
-            <option value="08">Tuitioned in - Parent Paid (08)</option>
-            <option value="09">Tuitioned in - Waived by Local Agreement (09)</option>
-            <option value="10">Tuitioned in - Agreement with Other District (10)</option>
-            <option value="11">Foreign Exchange student (11)</option>
-          </select></td>
-      </tr>
+        <td><select id="StudentsMA_EnrollCode" name="[Students.S_MA_STU_X]ReasonForEnrollment" class="psloaddrops">
+	 ~[if.ModAccess]
+            ~[tlist_sql;
+           SELECT
+               code,
+               className,
+               selected,
+               disabled,
+               description
+           FROM
+               TABLE(MA_PARAMS.getDropDownHTML('MA_XX','MA_EnrollCode','~([Students.S_MA_STU_X]ReasonForEnrollment)',~(curtermid),'BU'));
+       ]    <option value='~(code;t)' class='~(className;t)' ~(selected;t) ~(disabled;t)>~(description;t)</option>[/tlist_sql]
+        [else]
+        ~[tlist_sql;
+            SELECT description
+            FROM PS_COMMON_CODE WHERE PS_GROUP='MA_XX' AND CATEGORY  ='MA_EnrollCode'
+            AND code = '~([Students.S_MA_STU_X]ReasonForEnrollment)']
+        ~(description)
+
+        [/tlist_sql]
+    [/if]
+        	</select><span id="nonEditSpan_StudentsMA_EnrollCode"></span></td>
+    </tr>
       <tr class="~[evenoddrow]">
         <td class="bold">DOE015</td>
         <td><span class="bold">School Identification Number</span> (report uses School Code if specified otherwise uses
