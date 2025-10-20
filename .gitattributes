@@ -5,3 +5,4 @@ Images export-ignore
 .gitignore export-ignore
 LICENSE export-ignore
 README.md export-ignore
+release.bat export-ignore
