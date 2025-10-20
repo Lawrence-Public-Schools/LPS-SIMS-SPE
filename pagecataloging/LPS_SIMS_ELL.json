@@ -1,0 +1,14 @@
+{
+  "pages": [
+	{
+	  "htmlID": "navlps_sims_spe",
+	  "title": "State SPED Only SIMS &tilde;",
+	  "version": "0.0.0.1",
+	  "contextType": "student",
+	  "requiredContext": "student",
+	  "sortOrder": 1000,
+	  "pageURL": "/admin/students/lps_sims_spe.html?frn=~(studentfrn)",
+	  "parentHTMLID": "navUSA_MAStudent"
+	}
+  ]
+}
