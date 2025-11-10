@@ -1,5 +1,5 @@
 <script type="text/javascript">
 $j(document).ready(function() {
-$j( "ul#std_information > li > a[href^='state/stateMA.html?frn=']" ).parent().after($j('<li><a href="lps_sims_spe.html?frn=~(studentfrn)">State SPED Only SIMS &tilde;</a></li>'));
+$j( "ul#std_information > li > a[href^='state/stateMA.html?frn=']" ).parent().after($j('<li><a href="lps_sims_spe.html?frn=~(studentfrn)">SIMS - SPED Only</a></li>'));
 });
 </script>

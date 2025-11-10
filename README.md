@@ -24,7 +24,7 @@ A new file, `more2.LPS_SIMS_ELL.leftnav.footer.txt`, was created. This file uses
       .parent()
       .after(
         $j(
-          '<li><a href="lps_sims_spe.html?frn=~(studentfrn)">State SPED Only SIMS &tilde;</a></li>'
+          '<li><a href="lps_sims_spe.html?frn=~(studentfrn)">SIMS - SPED Only</a></li>'
         )
       );
   });

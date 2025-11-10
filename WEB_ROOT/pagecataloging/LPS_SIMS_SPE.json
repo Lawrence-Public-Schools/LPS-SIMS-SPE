@@ -3,10 +3,10 @@
 	{
 	  "htmlID": "navlps_sims_spe",
 	  "title": "SIMS - SPED Only",
-	  "version": "24.10.1.3",
+	  "version": "24.10.1.5",
 	  "contextType": "student",
 	  "requiredContext": "student",
-	  "sortOrder": 1000,
+	  "sortOrder": 1050,
 	  "pageURL": "/admin/students/lps_sims_spe.html?frn=~(studentfrn)",
 	  "parentHTMLID": "navUSA_MAStudent"
 	}
